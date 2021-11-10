@@ -8,7 +8,7 @@ const incidentSchema = new Schema({
         maxlength: 255
     },
     date: {
-        type: Date,
+        type: String,
         required: true
     },
     address: {
@@ -22,6 +22,7 @@ const incidentSchema = new Schema({
         maxlength: 500
     }
 })
+
 
 const incidentModel = mongoose.model('incident', incidentSchema)
 module.exports = incidentModel
