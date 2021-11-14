@@ -7,9 +7,9 @@ const app = express();
 require('dotenv').config()
 
 // connecting to mongo
-// mongoose.connect(process.env.connectionString)
-//   .then(() => console.log('connected to mongodb...'))
-//   .catch(err => console.log(err))
+mongoose.connect(process.env.connectionString)
+  .then(() => console.log('connected to mongodb...'))
+  .catch(err => console.log(err))
 
 // adding middlewares
 app.use(logger())
@@ -20,7 +20,7 @@ app.use(bodyParser.json())
  ***  Setting up routes
  ******************************************/
 
-// app.use('/incidents', require('./routes/incident'))
+app.use('/incidents', require('./routes/incident'))
 
 //Angular ---------------
 // app.use(express.static(process.cwd()+"/client/dist/Team-project/"));
