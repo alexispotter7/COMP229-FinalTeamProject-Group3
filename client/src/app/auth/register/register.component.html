@@ -1,0 +1,59 @@
+<!-- Content for the Register page -->
+<main class="container">
+    <!-- Message Area -->
+       <!-- <div class="alert alert-danger">
+       </div> -->
+   <!-- Register form -->
+   <div class="row">
+        <h1 class= "text-center" id="registertitle"> User Registration</h1>
+        <form class= "" id="registerform" method="POST" autocomplete="off" validate>                
+            <div class="field">
+                    <label class="label" for="firstname" name="firstname">First Name:</label>
+                    <input type="text" class="form-control" placeholder="" id="firstname" required>                        
+            </div>           
+            <div class="field">
+                    <label class="label" for="lastname" name="lastname">Last Name:</label>
+                        <input type="text" class="form-control" placeholder="" id="lastname" required>                        
+            </div>
+            <div class="field">
+                    <label class="label" for="username" name="username">User Name:</label>
+                        <input type="text" class="form-control" placeholder="" id="username" required>                        
+            </div>
+            <div class="field">
+                    <label class="label" for="usertype" Name="usertype">User type:</label>
+                        <select name="pull-down" class="form-control" id="usertype" required>
+                            <option hidden>Please select...</option>
+                            <option value="usertype1">User Type 1</option>
+                            <option value="usertype2">User Type 2</option>
+                            <option value="usertype3">User Type 3</option>
+                        </select>                     
+            </div>
+            <div class="field">
+                    <label class="label" for="email" Name="email">Email:</label>
+                        <input type="text" class="form-control" placeholder="" id="email" required>                        
+            </div>
+            <div class="field">
+                    <label class="label" for="password" Name="password">Password:</label>
+                        <input type="text" class="form-control" placeholder="" id="password" required>                        
+            </div>
+            <div class="field">
+                    <label class="label" for="confirm-password" Name="confirmpassword">Confirm Password:</label>
+                        <input type="text" class="form-control" placeholder="" id="confirm_password" required>                        
+            </div>
+
+            <div class="btns">
+                <button class="btn btn-dark btn-sm" type="submit" >Register</button>
+                <button class="btn btn-outline-dark"><a href="#" class = "cancel" >Cancel</a></button> 
+            </div>
+
+            <div class="text-center">
+                Current user?    
+                <a id="signinlink" href="/signin" >
+                Sign-in    
+                </a>
+            </div>
+        </form>                   
+   </div> 
+</main>
+
+

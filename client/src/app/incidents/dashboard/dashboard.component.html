@@ -1,0 +1,53 @@
+<!-- Incident Dashboard Main Content -->
+<main class="container" id="">
+    <div class="row">
+        <div class="table-responsive">
+            <h1 class="text-center">Incident Dashboard</h1>
+            <div class="dashboard-btn">
+                <div>
+                    <a href="#" id="new-report" class="btn btn-dark" role="button">
+                        <i class="fas fa-plus-circle"></i> 
+                        New Incident Report
+                    </a>                
+                </div>
+                <div>
+                    <a href="#" id="view-reports" class="btn btn-outline-dark" role="button">
+                        <i class="fab fa-readme"></i> 
+                        View All Incident Reports
+                    </a>                
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-hover ">
+                <!-- Header Row-->
+                <thead  class="table-dark" >
+                <tr>
+                    <th class="text-center">Report Number</th>
+                    <th class="text-center">Description</th>
+                    <th class="text-center" colspan="3" rowspan="">Menage</th>
+                </tr>
+                </thead>
+                <!-- Repeatable Template Row 
+               <% for(let count = 0; count < Reports.length; count++) { %> -->
+                    <tr>
+                        <td class="text-center">Report No. here</td>
+                        <td class="text-center">Description here</td>
+                        <td class = "table-bordered"> 
+                            <div class="text-center">
+                                <a href="#" class="btn btn-primary btn-sm">
+                                <i class="fas fa-pencil-alt"></i> Edit</a>
+                            </div>
+                            <div class="text-center">
+                                <a href="#" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-folder-minus"></i> Close</a>
+                            </div> 
+                            <div class="text-center">
+                                <a href="#" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> Delete</a>
+                            </div>
+                        </td>                        
+                    </tr>   
+                <!-- <% } %> -->
+            </table>
+        </div>
+    </div>
+</main>
