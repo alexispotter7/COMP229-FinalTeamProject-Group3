@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 const app = express();
 require('dotenv').config()
@@ -15,6 +16,7 @@ mongoose.connect(process.env.connectionString)
 app.use(logger())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+app.use(cors())
 
 /******************************************
  ***  Setting up routes
