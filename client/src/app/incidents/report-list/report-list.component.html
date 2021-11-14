@@ -1,23 +1,24 @@
-<p>report-list works!</p>
 <!-- Activate Incident Report List Main Content -->
 
 <main class="container" id="">
     <div class="row">
         <div class="table-responsive">
-            <h1 class="pagetitle">Active Incident Report List</h1>
+            <h1 class="text-center">Active Incident Report List</h1>
             <table class="table table-bordered table-striped table-hover">
                 <!-- Header Row-->
+                <thead class="table-dark">
                 <tr>
                     <th class="text-center">Report Number</th>
                     <th class="text-center">Description</th>
                 </tr>
+                </thead>
                 <!-- Repeatable Template Row -->
                 <!-- <% for(let count = 0; count < Reports.length; count++) { %> -->
-                    <!-- <tr>
-                        <td class="text-center"><%=Reports[count].reportNumber %></td>
-                        <td class="text-center"><%=Reports[count].description %></td>                      
+                    <tr>
+                        <td class="text-center">Report No. here</td>
+                        <td class="text-center">Description here</td>                      
                     </tr>   
-                <% } %> -->
+                <!-- <% } %> --> 
             </table>
         </div>
     </div>
