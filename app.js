@@ -4,9 +4,10 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
 const app = express();
+require('dotenv').config()
 
 // connecting to mongo
-mongoose.connect(require('./conf/db').uri)
+mongoose.connect(process.env.connectionString)
   .then(() => console.log('connected to mongodb...'))
   .catch(err => console.log(err))
 
