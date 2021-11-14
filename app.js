@@ -27,13 +27,11 @@ app.use(bodyParser.json())
 // app.get('/', (req,res) => {
 //   res.sendFile(process.cwd()+"/client/dist/Team-project/index.html")
 // });
-app.get("/", (req, res) => {
-  res.send(process.env.connectionString)
-})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  res.status(404).json({"error": "Not Found!"})
+  // res.status(404).json({"error": "Not Found!"})
+  res.send("hello app: " + process.env.connectionString)
 });
 
 // error handler
