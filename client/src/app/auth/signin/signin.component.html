@@ -1,31 +1,28 @@
-<p>signin works!</p>
 <!-- Content for the signin page -->
 <main class="container">
     <!-- Message Area -->
-        <div class="alert alert-danger">
-        </div>
+        <!-- <div class="alert alert-danger">
+        </div> -->
     <!-- Signin form -->
     <div class="row">
         <form id="signinform"method="POST" autocomplete="off">
-            <h1 id="signintitle">User Sign-in  <span><i id="keyicon" class="fa fa-key"></i></span></h1>
+            <h1 class="text-center">User Sign-in</h1>
 
-                <div class="signin-field">
+                <div class="field">
                     <label class="label" for="username" name="username">User Name:</label>
-                        <input type="text" class="signin-control" placeholder="" id="username" required>                        
+                        <input type="text" class="form-control" placeholder="" id="username" required>                        
                 </div>
-                <div class="signin-field">
+                <div class="field">
                     <label class="label" for="password" Name="password">Password:</label>
-                        <input type="text" class="signin-control" placeholder="" id="password" required>                        
+                        <input type="text" class="form-control" placeholder="" id="password" required>                        
                 </div>
                 
-                <div class="signinpg-btns">
-                    <button class="signinbtn">Sign-in</button>
-                    <a href="/">
-                    <input class="cancelbtn" type="button" value="Cancel">
-                    </a>
+                <div class="btns">
+                    <button class="btn btn-dark btn-sm">Sign-in</button>
+                    <button class="btn btn-outline-dark"><a href="#" class = "cancel" > Cancel</a></button>                        
                 </div>
 
-                <div class="forgotpw-link">
+                <div class="text-center">
                     Forgot password? Click     
                     <a id="forgotpwlink" href="#" >
                     here   

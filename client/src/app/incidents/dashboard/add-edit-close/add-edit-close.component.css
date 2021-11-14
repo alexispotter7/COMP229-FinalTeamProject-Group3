@@ -1,17 +1,6 @@
 /* Global css? */
-container {
-    margin: 5px auto;
-}
-
 h1 {
     margin: 30px 0 30px 0;
-}
-
-/* register form centered */
-form {
-    width: auto;
-    margin-right: auto;
-    margin-left: auto;
 }
 
 form label {
@@ -29,7 +18,11 @@ form label {
 
 }
 
-/* register and cancel btns */
+h4 {
+    margin-bottom: 20px;
+}
+
+/* btns */
 .btns{
     display: flex; 
     justify-content: space-around; 

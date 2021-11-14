@@ -8,8 +8,9 @@ import { FooterComponent } from './partials/footer/footer.component';
 import { HomeComponent } from './page/home/home.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { SigninComponent } from './auth/signin/signin.component';
-import { ReportListComponent } from './page/report-list/report-list.component';
-import { DashboardComponent } from './page/dashboard/dashboard.component';
+import { ReportListComponent } from './incidents/report-list/report-list.component';
+import { DashboardComponent } from './incidents/dashboard/dashboard.component';
+import { AddEditCloseComponent } from './incidents/dashboard/add-edit-close/add-edit-close.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { DashboardComponent } from './page/dashboard/dashboard.component';
     RegisterComponent,
     SigninComponent,
     ReportListComponent,
-    DashboardComponent
+    DashboardComponent,
+    AddEditCloseComponent
   ],
   imports: [
     BrowserModule,
