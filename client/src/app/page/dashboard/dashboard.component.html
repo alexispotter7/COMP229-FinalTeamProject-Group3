@@ -8,15 +8,15 @@
             <div class="dashboard-btn">
                 <div>
                     <a href="#" id="new-report" class="btn btn-primary" role="button">
-                        <i class="fas fa-plus-circle"></i> 
+                        <i class="fas fa-plus-circle"></i>
                         New Incident Report
-                    </a>                
+                    </a>
                 </div>
                 <div>
                     <a href="#" id="view-reports" class="btn btn-outline-primary" role="button">
-                        <i class="fab fa-readme"></i> 
+                        <i class="fab fa-readme"></i>
                         View All Incident Reports
-                    </a>                
+                    </a>
                 </div>
             </div>
             <table class="table table-bordered table-striped table-hover">
@@ -30,7 +30,7 @@
                <% for(let count = 0; count < Reports.length; count++) { %> -->
                     <tr>
                         <!-- <td class="text-center"><%=Reports[count].reportNumber %></td>
-                        <td class="text-center"><%=Reports[count].description %></td> --> -->
+                        <td class="text-center"><%=Reports[count].description %></td> -->
                         <td class="text-center">
                             <a href="/dashboard/edit/<%= Reports[count]._id %>" class="btn btn-primary btn-sm">
                             <i class="fas fa-pencil-alt"></i></a>
@@ -38,8 +38,8 @@
                         <td class="text-center">
                             <a href="/dashboard/delete/<%= Reports[count]._id %>" class="btn btn-secondary btn-sm">
                             <i class="fas fa-trash-alt"></i></a>
-                        </td>                        
-                    </tr>   
+                        </td>
+                    </tr>
                 <!-- <% } %> -->
             </table>
         </div>
