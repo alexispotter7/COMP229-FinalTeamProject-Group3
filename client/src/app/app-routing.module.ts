@@ -14,15 +14,12 @@ import { AddEditCloseComponent } from './incidents/dashboard/add-edit-close/add-
 
 const routes: Routes = [
   {path: "home", component: HomeComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: "register", component: RegisterComponent},
-  {path: "signin", component: SigninComponent},
-  {path: "report-list", component: ReportListComponent},
   {path: "dashboard", component: DashboardComponent},
-  {path: "add-edit-close", component: AddEditCloseComponent}
-
-
-
+  {path: "report-list", component: ReportListComponent},
+  {path: "login", component: SigninComponent},
+  {path: "register", component: RegisterComponent},
+  {path: "add-edit-close", component: AddEditCloseComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
 ];
 
 @NgModule({
