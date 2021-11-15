@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 const app = express();
-require('dotenv').config()
+require('dotenv').config();
 
 // connecting to mongo
 mongoose.connect(process.env.connectionString)
@@ -32,7 +32,7 @@ app.use('/incidents', require('./routes/incident'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  req.redirect("/");
+  res.redirect("/");
 });
 
 // error handler
