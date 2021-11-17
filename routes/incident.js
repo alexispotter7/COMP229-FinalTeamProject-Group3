@@ -3,11 +3,11 @@ const router = express.Router()
 
 const incideController = require('../controller/incident')
 
-router.get('/', incideController.getAllRecipes)
-router.post('/', incideController.createNewRecipe)
+router.get('/', incideController.getAllIncidents)
+router.post('/', incideController.createNewIncident)
 
-router.get('/:id', incideController.getRecipeById)
-router.put('/:id', incideController.updateRecipe)
-router.delete('/:id', incideController.deleteRecipe)
+router.get('/:id', incideController.getIncidentById)
+router.put('/:id', incideController.updateIncident)
+router.delete('/:id', incideController.deleteIncident)
 
 module.exports = router

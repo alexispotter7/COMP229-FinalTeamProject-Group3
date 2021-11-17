@@ -23,6 +23,16 @@ const incidentSchema = new Schema({
     }
 })
 
+// data = {
+//     description: String,
+//     priority: String,
+//     customerInformation: String,
+//     narrative: String,
+//     record: String,
+//     status: {
+//         default: true
+//     }
+// }
 
 const incidentModel = mongoose.model('incident', incidentSchema)
 module.exports = incidentModel
