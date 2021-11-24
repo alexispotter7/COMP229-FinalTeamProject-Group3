@@ -3,14 +3,14 @@ const incidentModel = require('../models/incident')
 
 const { OK, NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR, CREATED, NO_CONTENT } = require('http-status-codes')
 
-exports.getAllRecipes = (req, res) => {
+exports.getAllIncidents = (req, res) => {
     incidentModel.find((err, recipes) => {
         if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })
         res.status(OK).json(recipes)
     })
 }
 
-exports.createNewRecipe = (req, res) => {
+exports.createNewIncident = (req, res) => {
     const newRecipe = new incidentModel({
         name: req.body.name,
         date: req.body.date,
@@ -24,7 +24,7 @@ exports.createNewRecipe = (req, res) => {
     }) 
 }
 
-exports.getRecipeById = (req, res) => {
+exports.getIncidentById = (req, res) => {
     const incidentId = req.params.id 
     incidentModel.findById(incidentId, (err, incident) => {
         if (err) res.status(NOT_FOUND).json({"error": "Incident with that id does not exist"})
@@ -32,7 +32,7 @@ exports.getRecipeById = (req, res) => {
     })
 }
 
-exports.updateRecipe = (req, res) => {
+exports.updateIncident = (req, res) => {
    const incidentId = req.params.id
    const newRecipe = {
         name: req.body.name,
@@ -56,21 +56,10 @@ exports.updateRecipe = (req, res) => {
    })
 }
 
-exports.deleteRecipe = (req, res) => {
+exports.deleteIncident = (req, res) => {
     incidentId = req.params.id
     incidentModel.deleteOne({_id: incidentId}, (err) => {
         if (err) return res.status(BAD_REQUEST).json({"error": "Incident with that id does not exist"})
         res.status(OK).json()
     })
 }
-
-// data = {
-//     description: String,
-//     priority: String,
-//     customerInformation: String,
-//     narrative: String,
-//     record: String,
-//     status: {
-//         default: true
-//     }
-// }
