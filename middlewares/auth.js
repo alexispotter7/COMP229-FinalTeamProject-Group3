@@ -2,10 +2,9 @@ const jwt = require('jsonwebtoken')
 const config = require('../config') // needs to be hidden
 
 const authMiddleware = (req, res, next) => {
-    // read the token from header or url 
-    
-    const token = req.headers.authorization
-    console.log(token);   
+    // read the token from header or url     
+    let token = req.headers.authorization
+    console.log("token:  " + token);
 
     // token does not exist
     if(!token) {
@@ -16,6 +15,7 @@ const authMiddleware = (req, res, next) => {
     }
     
     token = token.split(' ')[1];
+    console.log("split:  " + token);
 
     // create a promise that decodes the token
     const p = new Promise(
