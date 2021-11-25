@@ -3,7 +3,9 @@ const config = require('../config') // needs to be hidden
 
 const authMiddleware = (req, res, next) => {
     // read the token from header or url 
-    const token = req.headers['x-access-token'] || req.query.token
+    
+    const token = req.headers.authorization
+    console.log(token);   
 
     // token does not exist
     if(!token) {
@@ -12,6 +14,8 @@ const authMiddleware = (req, res, next) => {
             message: 'not logged in'
         })
     }
+    
+    token = token.split(' ')[1];
 
     // create a promise that decodes the token
     const p = new Promise(
@@ -22,6 +26,8 @@ const authMiddleware = (req, res, next) => {
             })
         }
     )
+
+    
 
     // if it has failed to verify, it will return an error message
     const onError = (error) => {
