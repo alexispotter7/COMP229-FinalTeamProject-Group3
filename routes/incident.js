@@ -12,4 +12,6 @@ router.get('/:id', authMiddleware, incideController.getIncidentById)
 router.put('/:id', authMiddleware, incideController.updateIncident)
 router.delete('/:id', authMiddleware, incideController.deleteIncident)
 
+router.post('/:id/close', authMiddleware, incideController.closeIncidentStatus)
+
 module.exports = router
