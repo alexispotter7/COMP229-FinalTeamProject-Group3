@@ -53,14 +53,14 @@ exports.updateIncident = async (req, res) => {
     try {
         const existingIncident = await incidentModel.findById(incidentId)
         // console.log(existingIncident.status === false)
-        if (existingIncident.status === false) return res.sendStatus(403)
+        if (existingIncident.status === false) return res.status(403).json()
         console.log("hello")
         await incidentModel.updateOne({_id:incidentId}, newIncident)
-        res.sendStatus(200)
+        res.status(200).json()
     } catch(e) {
         const newIncidentModel = new incidentModel(newIncident)
         await incidentModel.create(newIncidentModel)
-        res.sendStatus(201)
+        res.status(201).json()
     }
 }
 
@@ -77,5 +77,5 @@ exports.closeIncidentStatus = async (req, res) => {
     const incident = await incidentModel.findById(incidentId)
     incident.status = false
     await incidentModel.updateOne({_id: incidentId}, incident)
-    res.sendStatus(200)
+    res.status(200).json()
 }
