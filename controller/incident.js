@@ -4,9 +4,9 @@ const incidentModel = require('../models/incident')
 const { OK, NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR, CREATED, NO_CONTENT } = require('http-status-codes')
 
 exports.getAllIncidents = (req, res) => {
-    incidentModel.find((err, recipes) => {
+    incidentModel.find((err, incidents) => {
         if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })
-        res.status(OK).json(recipes)
+        res.status(OK).json(incidents)
     })
 }
 
@@ -15,7 +15,11 @@ exports.createNewIncident = (req, res) => {
         name: req.body.name,
         date: req.body.date,
         address: req.body.address,
-        description: req.body.description
+        description: req.body.description,
+        priority: req.body.priority,
+        customerInformation: req.body.customerInformation,
+        narrative: req.body.narrative,
+        record: req.body.record,
     })    
 
     incidentModel.create(newRecipe, (err, incident) => {
@@ -32,34 +36,46 @@ exports.getIncidentById = (req, res) => {
     })
 }
 
-exports.updateIncident = (req, res) => {
+
+exports.updateIncident = async (req, res) => {
    const incidentId = req.params.id
-   const newRecipe = {
-        name: req.body.name,
-        date: req.body.date,
-        address: req.body.address,
-        description: req.body.description
+   const newIncident = {
+       name: req.body.name,
+       date: req.body.date,
+       address: req.body.address,
+       description: req.body.description,
+       priority: req.body.priority,
+       customerInformation: req.body.customerInformation,
+       narrative: req.body.narrative,
+       record: req.body.record,
+       status: req.body.status
     }  
-   incidentModel.findOne({_id: incidentId}, (err,inc) => {
-       if (err) {
-            incidentModel.create(new incidentModel(newRecipe), (err, incident) => {
-                if (err) return res.status(BAD_REQUEST).json({"error": err.message})
-                return res.status(CREATED).json(incident)
-            })  
-       }
-       else{
-           incidentModel.updateOne({_id: incidentId}, newRecipe, (err, incident) => {
-               if (err) return res.status(BAD_REQUEST).json({"error": err.message})
-               return res.status(OK).json(newRecipe)
-           })
-       }
-   })
+    try {
+        const existingIncident = await incidentModel.findById(incidentId)
+        // console.log(existingIncident.status === false)
+        if (existingIncident.status === false) return res.status(403).json()
+        console.log("hello")
+        await incidentModel.updateOne({_id:incidentId}, newIncident)
+        res.status(200).json()
+    } catch(e) {
+        const newIncidentModel = new incidentModel(newIncident)
+        await incidentModel.create(newIncidentModel)
+        res.status(201).json()
+    }
 }
 
 exports.deleteIncident = (req, res) => {
-    incidentId = req.params.id
+    const incidentId = req.params.id
     incidentModel.deleteOne({_id: incidentId}, (err) => {
         if (err) return res.status(BAD_REQUEST).json({"error": "Incident with that id does not exist"})
         res.status(OK).json()
     })
+}
+
+exports.closeIncidentStatus = async (req, res) => {
+    const incidentId = req.params.id
+    const incident = await incidentModel.findById(incidentId)
+    incident.status = false
+    await incidentModel.updateOne({_id: incidentId}, incident)
+    res.status(200).json()
 }

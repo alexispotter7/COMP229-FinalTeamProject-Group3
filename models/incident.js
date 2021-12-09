@@ -22,27 +22,37 @@ const incidentSchema = new Schema({
         maxlength: 500
     },
     priority: {
-        type: String
+        type: String,
+        required: true
     },
-    customerInformation : {        
-        
-        name: { type: String },
-        number: { type: String },
-        email: { type: String }        
+    customerInformation: {
+        type: String,
+        required: true
     },
-    narrative : {
-        type: String
+    narrative: {
+        type: String,
+        required: true
     },
-    RecordNumber : {
-        type: int
+    record: {
+        type: String,
+        required: true
     },
-    status : {
-        default: 0,
-        type : int
-    }   
-
+    status: {
+        type: Boolean,
+        default: true
+    }
 })
 
+// data = {
+//     description: String,
+//     priority: String,
+//     customerInformation: String,
+//     narrative: String,
+//     record: String,
+//     status: {
+//         default: true
+//     }
+// }
 
 // data = {
 //     description: String,
