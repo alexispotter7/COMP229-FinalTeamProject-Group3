@@ -111,8 +111,6 @@ exports.signin = (req, res) => {
 
 
 
-
-
 exports.check = (req, res) => {
     // read the token from header or url 
     const token = req.headers['x-access-token'] || req.query.token
@@ -157,11 +155,31 @@ exports.check = (req, res) => {
 
 
 
+//Get user's profile
+exports.getProfile = async (req, res) => {
+    const username = req.decoded.username
 
-// Only the person should be able to change the person's own user profile
+    const display = (user) => { 
+        if(user) {
+            return res.json({                
+                "firstName": user.firstName,
+                "lastName": user.lastName,
+                "email": user.email
+            })
+        } else {
+            throw new Error('Error!')
+        }
+    }  
+
+    userModel.findOneByUsername(username)
+    .then(display)    
+}
+
+
+//Update user's profile
 exports.updateProfile = async (req, res) => {
     
-    // res.json({"Have we got the decoded here?": req.decoded, "What about the update info?": req.body} )    
+    // res.json({"The decoded contents?": req.decoded, "The update info that the user tries to update with": req.body} )    
     
     // const test = userModel.findOneByUsername(username)        
     // if(test) {
@@ -190,7 +208,6 @@ exports.updateProfile = async (req, res) => {
             "message": 'Profile Updated successfully'
         })
     }
-
 
     // error occured
     const onError = (error) => {

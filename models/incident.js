@@ -16,16 +16,20 @@ const incidentSchema = new Schema({
         required: true,
         maxlength: 255
     },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true,
         maxlength: 500
     },
     priority: {
-        type: String,
-        required: true
-    },
-    customerInformation: {
         type: String,
         required: true
     },
