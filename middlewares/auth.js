@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../config') // needs to be hidden
 
 const authMiddleware = (req, res, next) => {
-    // read the token from header or url     
+    // read the token from header     
     let token = req.headers.authorization
     // console.log("token:  " + token);
 

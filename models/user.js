@@ -50,6 +50,26 @@ userSchema.statics.create = function(username, password, firstName, lastName, em
     return user.save()
 }
 
+////////////////////////////////////
+
+// update the document of the user who is signned in and trying to modify the user Info
+// updateOne() instead of update()
+
+userSchema.statics.updateOne = function(user, firstName, lastName, email) {          
+           
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.email = email;
+
+    // User's new profile is updated to the database
+    return user.save()
+}
+
+
+
+/////////////////////////////////
+
+
 
 // for password verification
 userSchema.methods.verify = function (password) {
@@ -62,10 +82,11 @@ userSchema.methods.verify = function (password) {
     return this.password === encrypted;
 };
 
+
 // finds a user document in the database by using username 
 userSchema.statics.findOneByUsername = function(username) {
     return this.findOne({
-        username
+        username        
     }).exec()
 }
 

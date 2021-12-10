@@ -14,11 +14,10 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.singup = (req, res) => {
-    const { username, password,firstName,lastName, email } = req.body
-    let newUser = null
+    const { username, password,firstName,lastName, email } = req.body    
 
     // create a new user if does not exist
-    const create = (user) => { // where the hell is this user from?
+    const create = (user) => {
         if(user) {
             throw new Error('username exists')
         } else {
@@ -66,7 +65,7 @@ exports.signin = (req, res) => {
                 const p = new Promise((resolve, reject) => {
                     jwt.sign(
                         {
-                            _id: user._id,
+                            _id: user._id, 
                             username: user.username,
                             firstName: user.firstName                            
                         }, 
@@ -157,3 +156,51 @@ exports.check = (req, res) => {
 }
 
 
+
+
+// Only the person should be able to change the person's own user profile
+exports.updateProfile = async (req, res) => {
+    
+    // res.json({"Have we got the decoded here?": req.decoded, "What about the update info?": req.body} )    
+    
+    // const test = userModel.findOneByUsername(username)        
+    // if(test) {
+    //     res.json({"Have we got the damn user?": "yes"})
+    // } else {
+    //     res.json({"Have we got the damn user?": "no"})
+    // }
+    
+    const username = req.decoded.username
+    const firstName = req.body.firstName
+    const lastName = req.body.lastName
+    const email = req.body.email    
+
+    // Update the user(document in the DB) with profile info in req.body 
+    const update = (user) => { 
+        if(user) {
+            return userModel.updateOne(user, firstName, lastName, email)            
+        } else {
+            throw new Error('There is no such username')
+        }
+    }    
+
+    // respond to the client
+    const respond = () => {
+        res.json({
+            "message": 'Profile Updated successfully'
+        })
+    }
+
+
+    // error occured
+    const onError = (error) => {
+        res.status(403).json({
+            "message": error.message
+        })
+    }    
+    
+    userModel.findOneByUsername(username)
+    .then(update)
+    .then(respond)
+    .then(onError)        
+ }
