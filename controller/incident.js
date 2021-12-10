@@ -43,9 +43,10 @@ exports.updateIncident = async (req, res) => {
        name: req.body.name,
        date: req.body.date,
        address: req.body.address,
+       phoneNumber: req.body.phoneNumber,
+       email: req.body.email,
        description: req.body.description,
-       priority: req.body.priority,
-       customerInformation: req.body.customerInformation,
+       priority: req.body.priority,       
        narrative: req.body.narrative,
        record: req.body.record,
        status: req.body.status
