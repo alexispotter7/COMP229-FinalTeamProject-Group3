@@ -28,12 +28,16 @@ const userSchema = new Schema({
         type: String,
         required: true,
         maxlength: 255
+    },
+    admin: {
+        type: Boolean,
+        default: false        
     }
 })
 
 
 // create new User document
-userSchema.statics.create = function(username, password, firstName, lastName, email) {
+userSchema.statics.create = function(username, password, firstName, lastName, email, admin) {
     // encrypt the password
     const encrypted = crypto.createHmac('sha1', config.pwSecret)
                       .update(password)
@@ -43,7 +47,8 @@ userSchema.statics.create = function(username, password, firstName, lastName, em
         password: encrypted, 
         firstName, 
         lastName, 
-        email
+        email,
+        admin
     })
 
     // a new user document is saved to the database
@@ -80,11 +85,12 @@ userSchema.set('toJSON', { // ?
 
 // update the document of the user who is signned in and trying to modify the user Info
 // updateOne() instead of update()
-userSchema.statics.updateOne = function(user, firstName, lastName, email) {          
+userSchema.statics.updateOne = function(user, firstName, lastName, email, admin) {          
            
     user.firstName = firstName;
     user.lastName = lastName;
     user.email = email;
+    user.admin = admin;
 
     // User's new profile is updated to the database
     return user.save()

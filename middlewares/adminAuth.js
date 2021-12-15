@@ -1,8 +1,6 @@
-const jwt = require('jsonwebtoken')
-const config = require('../config') // needs to be hidden
-// const userModel = require('../models/user')
+const userModel = require('../models/user')
 
-const authMiddleForUpdate = (req, res, next) => {
+const adminAuthorization = async (req, res, next) => {
 
     // read the token from header     
     let token = req.headers.authorization
@@ -28,4 +26,5 @@ const authMiddleForUpdate = (req, res, next) => {
         
     })
 }
-module.exports = authMiddleForUpdate;
+
+module.exports = adminAuthorization;

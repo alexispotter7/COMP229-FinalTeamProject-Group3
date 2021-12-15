@@ -14,14 +14,14 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.singup = (req, res) => {
-    const { username, password,firstName,lastName, email } = req.body    
+    const { username, password,firstName,lastName, email, admin } = req.body    
 
     // create a new user if does not exist
     const create = (user) => {
         if(user) {
             throw new Error('username exists')
         } else {
-            return userModel.create(username, password,firstName,lastName, email)
+            return userModel.create(username, password,firstName,lastName, email, admin)
         }
     }    
 
@@ -164,7 +164,8 @@ exports.getProfile = async (req, res) => {
             return res.json({                
                 "firstName": user.firstName,
                 "lastName": user.lastName,
-                "email": user.email
+                "email": user.email,
+                "admin" : user.admin
             })
         } else {
             throw new Error('Error!')

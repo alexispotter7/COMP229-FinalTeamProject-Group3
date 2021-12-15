@@ -3,9 +3,10 @@ const router = express.Router()
 
 const incideController = require('../controller/incident')
 const authMiddleware = require('../middlewares/auth')
+const adminAuthMiddleWare = require('../middlewares/adminAuth')
 
 
-router.get('/', incideController.getAllIncidents)
+router.get('/', authMiddleware, incideController.getAllIncidents)
 router.post('/', authMiddleware, incideController.createNewIncident)
 
 router.get('/:id', authMiddleware, incideController.getIncidentById)

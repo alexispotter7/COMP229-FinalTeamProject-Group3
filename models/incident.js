@@ -2,6 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const incidentSchema = new Schema({
+    username: {
+        type: String,
+        required: true,
+        maxlength: 255
+    },
     name: {
         type: String,
         required: true,
@@ -45,6 +50,7 @@ const incidentSchema = new Schema({
         type: Boolean,
         default: true
     }
+    
 })
 
 // data = {

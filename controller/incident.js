@@ -1,20 +1,52 @@
 const express = require('express')
 const incidentModel = require('../models/incident')
-
+const userModel = require('../models/user')
 const { OK, NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR, CREATED, NO_CONTENT } = require('http-status-codes')
 
 exports.getAllIncidents = (req, res) => {
-    incidentModel.find((err, incidents) => {
-        if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })
-        res.status(OK).json(incidents)
-    })
+    // console.log(req.decoded) // to check what is passed to this controller    
+    
+    const username = req.decoded.username; // get user name that has gone through authentication
+
+    //if the user is an authorized admin, it can get all the incidents. Otherwise, only the incidents it created
+    const checkAdmin = (user) => { 
+
+    console.log()
+
+        if(user.admin == true) {            
+            incidentModel.find((err, incidents) => {
+                if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })        
+                res.status(OK).json(incidents)
+            })
+            
+        } else {
+            // res.json({"message": "Admin only can see all the things"})
+            incidentModel.find({"username": user.username}, (err, incidents) => {
+                if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })        
+                res.status(OK).json(incidents)
+                console.log(incidents)
+            })
+        }
+    } 
+
+    userModel.findOneByUsername(username)
+    .then(checkAdmin)    
+    
+
+    // incidentModel.find((err, incidents) => {
+    //     if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })        
+    //     res.status(OK).json(incidents)
+    // })
 }
 
 exports.createNewIncident = (req, res) => {
     const newRecipe = new incidentModel({
+        username : req.decoded.username,
         name: req.body.name,
         date: req.body.date,
         address: req.body.address,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email,
         description: req.body.description,
         priority: req.body.priority,
         customerInformation: req.body.customerInformation,
@@ -40,6 +72,7 @@ exports.getIncidentById = (req, res) => {
 exports.updateIncident = async (req, res) => {
    const incidentId = req.params.id
    const newIncident = {
+       username : req.decoded.username,
        name: req.body.name,
        date: req.body.date,
        address: req.body.address,
