@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const incidentSchema = new Schema({
-    username: {
+    owner: {
         type: String,
         required: true,
         maxlength: 255
@@ -42,13 +42,20 @@ const incidentSchema = new Schema({
         type: String,
         required: true
     },
-    record: {
+    status: {
+        type: String,
+        default: "NEW",
+        maxlength: 500
+    },
+    createdDate:{
+        type: Date
+    },    
+    recordNumber: {
         type: String,
         required: true
-    },
-    status: {
-        type: Boolean,
-        default: true
+    }, 
+    incidentDuration: {
+        type:String
     }
     
 })

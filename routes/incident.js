@@ -3,7 +3,7 @@ const router = express.Router()
 
 const incideController = require('../controller/incident')
 const authMiddleware = require('../middlewares/auth')
-const adminAuthMiddleWare = require('../middlewares/adminAuth')
+
 
 
 router.get('/', authMiddleware, incideController.getAllIncidents)

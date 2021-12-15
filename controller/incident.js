@@ -22,7 +22,7 @@ exports.getAllIncidents = (req, res) => {
         } else {
             // res.json({"message": "Admin only can see all the things"})
             incidentModel.find({"username": user.username}, (err, incidents) => {
-                if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })        
+                if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })                        
                 res.status(OK).json(incidents)
                 console.log(incidents)
             })
@@ -31,17 +31,29 @@ exports.getAllIncidents = (req, res) => {
 
     userModel.findOneByUsername(username)
     .then(checkAdmin)    
-    
-
-    // incidentModel.find((err, incidents) => {
-    //     if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })        
-    //     res.status(OK).json(incidents)
-    // })
 }
 
 exports.createNewIncident = (req, res) => {
+
+    const date = new Date() // raw data for duration calculation   
+    // const currentDate = date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString() + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
+       
+    function formatDate(date) {
+        yy = String(date.getYear() - 100) // For years greater than or equal to 2000, the value returned by getYear() is 100 or greater. For example, if the year is 2026, getYear() returns 126.
+        mm = date.getMonth().toString()
+        dd = date.getDate().toString()
+        hh = date.getHours().toString()
+        mm = date.getMinutes().toString()
+        ss = date.getSeconds().toString()
+
+        return yy+mm+dd+"-"+hh+mm+ss
+    }
+    
+
+    const recordNum = formatDate(date)
+
     const newRecipe = new incidentModel({
-        username : req.decoded.username,
+        owner : req.decoded.username,
         name: req.body.name,
         date: req.body.date,
         address: req.body.address,
@@ -51,7 +63,8 @@ exports.createNewIncident = (req, res) => {
         priority: req.body.priority,
         customerInformation: req.body.customerInformation,
         narrative: req.body.narrative,
-        record: req.body.record,
+        createdDate: date,
+        recordNumber: recordNum,
     })    
 
     incidentModel.create(newRecipe, (err, incident) => {
@@ -64,7 +77,41 @@ exports.getIncidentById = (req, res) => {
     const incidentId = req.params.id 
     incidentModel.findById(incidentId, (err, incident) => {
         if (err) res.status(NOT_FOUND).json({"error": "Incident with that id does not exist"})
-        res.status(OK).json(incident)
+
+        currentDate = new Date()
+        
+        result = Math.abs(currentDate - incident.createdDate) // the result is in milliseconds
+        duration = function(result) {
+            
+
+            resultInSec = result / 1000
+            resultInMin = resultInSec / 60
+            resultInHour = resultInMin / 60
+            resultInDay = resultInMin / 24
+
+            dayInMilliSec =  1000 * 60 * 60 * 24
+            hourInMilliSec = 1000 * 60 * 60
+            minInMilliSec = 1000 * 60
+            secInMilliSec = 1000
+
+            
+            if(dayInMilliSec <= result){
+                return Math.floor(resultInDay) + " days(s)"
+            }else if(hourInMilliSec <= result && result < dayInMilliSec) {                
+               return Math.floor(resultInHour) + " hour(s)"
+            }else if (minInMilliSec <= result && result < hourInMilliSec) {
+                return Math.floor(resultInMin) + " minute(s)"
+            }else if (secInMilliSec <= result && result < minInMilliSec) {
+                return Math.floor(resultInSec) + " seconds(s)"
+            }else {
+                return result + " milliseconds(s)"
+            }
+
+        }
+
+        incidentWithDuration = Object.assign(incident, {"incidentDuration" : String(duration(result))}) // The format of incidentDuration is String
+        console.log(incident.createdDate)
+        res.status(OK).json(incidentWithDuration)
     })
 }
 
@@ -72,7 +119,7 @@ exports.getIncidentById = (req, res) => {
 exports.updateIncident = async (req, res) => {
    const incidentId = req.params.id
    const newIncident = {
-       username : req.decoded.username,
+       owner : req.decoded.username,
        name: req.body.name,
        date: req.body.date,
        address: req.body.address,
@@ -81,7 +128,7 @@ exports.updateIncident = async (req, res) => {
        description: req.body.description,
        priority: req.body.priority,       
        narrative: req.body.narrative,
-       record: req.body.record,
+       recordNumber: req.body.recordNumber,
        status: req.body.status
     }  
     try {
