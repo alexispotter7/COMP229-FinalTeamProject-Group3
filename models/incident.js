@@ -39,7 +39,7 @@ const incidentSchema = new Schema({
         required: true
     },
     narrative: {
-        type: String,
+        type: Array,
         required: true
     },
     status: {
@@ -55,7 +55,12 @@ const incidentSchema = new Schema({
         required: true
     }, 
     incidentDuration: {
-        type:String
+        type:String,
+        maxlength: 500
+    },
+    incidentResolution: {
+        type:String,
+        maxlength: 500
     }
     
 })
