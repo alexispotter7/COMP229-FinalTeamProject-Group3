@@ -8,15 +8,15 @@ const app = express();
 require('dotenv').config()
 
 // // connecting to mongo
-// mongoose.connect(process.env.connectionString)
-//   .then(() => console.log('connected to mongodb...'))
-//   .catch(err => console.log(err))
+mongoose.connect(process.env.connectionString)
+  .then(() => console.log('connected to mongodb...'))
+  .catch(err => console.log(err))
 
 
 // For Test!!!
-let db = require('./db');
-    // Connect to the Database (My Database: JaeukDB)
-mongoose.connect(db.mongodbUri);
+// let db = require('./db');
+//     // Connect to the Database (My Database: JaeukDB)
+// mongoose.connect(db.mongodbUri);
 
 let mongoDB = mongoose.connection;
 mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
