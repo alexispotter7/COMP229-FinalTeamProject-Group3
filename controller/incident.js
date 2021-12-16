@@ -3,6 +3,31 @@ const incidentModel = require('../models/incident')
 const userModel = require('../models/user')
 const { OK, NOT_FOUND, BAD_REQUEST, INTERNAL_SERVER_ERROR, CREATED, NO_CONTENT } = require('http-status-codes')
 
+duration = function (result) {
+
+    resultInSec = result / 1000
+    resultInMin = resultInSec / 60
+    resultInHour = resultInMin / 60
+    resultInDay = resultInMin / 24
+
+    dayInMilliSec = 1000 * 60 * 60 * 24
+    hourInMilliSec = 1000 * 60 * 60
+    minInMilliSec = 1000 * 60
+    secInMilliSec = 1000
+
+    if (dayInMilliSec <= result) {
+        return Math.floor(resultInDay) + " days(s)"
+    } else if (hourInMilliSec <= result && result < dayInMilliSec) {
+        return Math.floor(resultInHour) + " hour(s)"
+    } else if (minInMilliSec <= result && result < hourInMilliSec) {
+        return Math.floor(resultInMin) + " minute(s)"
+    } else if (secInMilliSec <= result && result < minInMilliSec) {
+        return Math.floor(resultInSec) + " seconds(s)"
+    } else {
+        return result + " milliseconds(s)"
+    }
+}
+
 exports.getAllIncidents = (req, res) => {
     // console.log(req.decoded) // to check what is passed to this controller    
 
@@ -83,7 +108,7 @@ exports.createNewIncident = (req, res) => {
         priority: req.body.priority,
         createdDate: date,
         recordNumber: recordNum,
-        incidentResoultion: req.body.incidentResoultion
+        incidentResolution: req.body.incidentResolution
     })
     // For Narrative
     // timestamp = new Date().toLocaleDateString('en-CA')
@@ -104,38 +129,41 @@ exports.getIncidentById = (req, res) => {
         if (err) res.status(NOT_FOUND).json({ "error": "Incident with that id does not exist" })
 
         currentDate = new Date()
-
         result = Math.abs(currentDate - incident.createdDate) // the result is in milliseconds
-        duration = function (result) {
+        
+        // duration = function (result) {
 
+        //     resultInSec = result / 1000
+        //     resultInMin = resultInSec / 60
+        //     resultInHour = resultInMin / 60
+        //     resultInDay = resultInMin / 24
 
-            resultInSec = result / 1000
-            resultInMin = resultInSec / 60
-            resultInHour = resultInMin / 60
-            resultInDay = resultInMin / 24
+        //     dayInMilliSec = 1000 * 60 * 60 * 24
+        //     hourInMilliSec = 1000 * 60 * 60
+        //     minInMilliSec = 1000 * 60
+        //     secInMilliSec = 1000
 
-            dayInMilliSec = 1000 * 60 * 60 * 24
-            hourInMilliSec = 1000 * 60 * 60
-            minInMilliSec = 1000 * 60
-            secInMilliSec = 1000
+        //     if (dayInMilliSec <= result) {
+        //         return Math.floor(resultInDay) + " days(s)"
+        //     } else if (hourInMilliSec <= result && result < dayInMilliSec) {
+        //         return Math.floor(resultInHour) + " hour(s)"
+        //     } else if (minInMilliSec <= result && result < hourInMilliSec) {
+        //         return Math.floor(resultInMin) + " minute(s)"
+        //     } else if (secInMilliSec <= result && result < minInMilliSec) {
+        //         return Math.floor(resultInSec) + " seconds(s)"
+        //     } else {
+        //         return result + " milliseconds(s)"
+        //     }
+        // }
 
-
-            if (dayInMilliSec <= result) {
-                return Math.floor(resultInDay) + " days(s)"
-            } else if (hourInMilliSec <= result && result < dayInMilliSec) {
-                return Math.floor(resultInHour) + " hour(s)"
-            } else if (minInMilliSec <= result && result < hourInMilliSec) {
-                return Math.floor(resultInMin) + " minute(s)"
-            } else if (secInMilliSec <= result && result < minInMilliSec) {
-                return Math.floor(resultInSec) + " seconds(s)"
-            } else {
-                return result + " milliseconds(s)"
-            }
-
+        if(incident.status == 0) {
+            console.log("it was open for " + incident.incidentDuration)
+            incidentWithDuration = Object.assign(incident, { "incidentDuration": String(incident.incidentDuration) }) // The format of incidentDuration is String
+        } else {
+            incidentWithDuration = Object.assign(incident, { "incidentDuration": String(duration(result)) }) // The format of incidentDuration is String
         }
-
-        incidentWithDuration = Object.assign(incident, { "incidentDuration": String(duration(result)) }) // The format of incidentDuration is String
-        console.log(incident.createdDate)
+        
+        // console.log(incident.createdDate)
         res.status(OK).json(incidentWithDuration)
     })
 }
@@ -160,7 +188,7 @@ exports.updateIncident = async (req, res) => {
         description: req.body.description,
         priority: req.body.priority,
         status: req.body.status,
-        incidentResoultion: req.body.incidentResoultion
+        incidentResolution: req.body.incidentResolution
     }
 
     try {
@@ -168,16 +196,30 @@ exports.updateIncident = async (req, res) => {
         if (existingIncident.status === false) return res.status(403).json() // ???        
         await incidentModel.updateOne({ _id: incidentId }, newIncident)
 
+        // push narrative to the Narrative array
         var existingInci2 = await incidentModel.findById(incidentId)
         await existingInci2.narrative.push(narr)
-        await console.log(existingInci2.narrative)
-        existingInci2.save()
-        // console.log(existingIncident.narrative)
+        
+
+        //duration update should stop when status == 0 == Closed
+        if(existingInci2.status == "0") {            
+            console.log("status: " + existingInci2.status)
+            
+            currentDate = new Date()
+            result = Math.abs(currentDate - existingInci2.createdDate) // the result is in milliseconds
+            existingInci2.incidentDuration = duration(result)
+        } else {
+            console.log("status: " + existingInci2.status)
+        }
+
+
+        existingInci2.save() // this is the part I missed
         res.status(200).json()
 
 
     } catch (e) {
         console.log("Inside catch{}. Error occured")
+        console.log("Error", e)
         const newIncidentModel = new incidentModel(newIncident)
         await incidentModel.create(newIncidentModel)
         res.status(201).json()
