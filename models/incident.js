@@ -39,20 +39,20 @@ const incidentSchema = new Schema({
         required: true
     },
     narrative: {
-        type: Array,
+        type: [{timestamp : {type: String}, comment : {type: String}}],
         required: true
     },
     status: {
         type: String,
-        default: "NEW",
+        default: "1",
         maxlength: 500
     },
     createdDate:{
         type: Date
     },    
     recordNumber: {
-        type: String,
-        required: true
+        type: String
+        
     }, 
     incidentDuration: {
         type:String,
@@ -60,31 +60,11 @@ const incidentSchema = new Schema({
     },
     incidentResolution: {
         type:String,
-        maxlength: 500
+        maxlength: 500        
     }
     
 })
 
-// data = {
-//     description: String,
-//     priority: String,
-//     customerInformation: String,
-//     narrative: String,
-//     record: String,
-//     status: {
-//         default: true
-//     }
-// }
 
-// data = {
-//     description: String,
-//     priority: String,
-//     customerInformation: String,
-//     narrative: String,
-//     RecordNumber: int,
-//     status: {
-//         default: true
-//     }
-// }
 const incidentModel = mongoose.model('incident', incidentSchema)
 module.exports = incidentModel

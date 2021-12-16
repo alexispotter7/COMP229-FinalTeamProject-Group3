@@ -66,9 +66,11 @@ exports.createNewIncident = (req, res) => {
         incidentResoultion: req.body.incidentResoultion 
     })    
     // For Narrative
-    timestamp = new Date();
+    // timestamp = new Date().toLocaleDateString('en-CA')
+    timestamp = new Date()
     comment = req.body.newComment;
-    newRecipe.narrative.push({timestamp, comment})    
+    var narr = {timestamp, comment} 
+    newRecipe.narrative.push(narr)    
 
     incidentModel.create(newRecipe, (err, incident) => {
         if (err) return res.status(BAD_REQUEST).json({"error": err.message})
@@ -121,18 +123,13 @@ exports.getIncidentById = (req, res) => {
 
 exports.updateIncident = async (req, res) => {
    const incidentId = req.params.id
-//    const newIncident = new incidentModel({
-//        owner : req.decoded.username,
-//        name: req.body.name,
-//        date: req.body.date,
-//        address: req.body.address,
-//        phoneNumber: req.body.phoneNumber,
-//        email: req.body.email,
-//        description: req.body.description,
-//        priority: req.body.priority,              
-//        status: req.body.status,       
-//        incidentResoultion: req.body.incidentResoultion 
-//     })
+    
+// For Narrative
+    // timestamp = new Date().toLocaleDateString('en-CA')
+    timestamp = new Date()
+    comment = req.body.newComment;   
+    var narr = {timestamp, comment} 
+
     const newIncident = {
         owner : req.decoded.username,
         name: req.body.name,
@@ -143,23 +140,24 @@ exports.updateIncident = async (req, res) => {
         description: req.body.description,
         priority: req.body.priority,              
         status: req.body.status,       
-        incidentResoultion: req.body.incidentResoultion 
+        incidentResoultion: req.body.incidentResoultion
      }
-    // For Narrative
-    // timestamp = new Date();    
-    // comment = req.body.newComment;
-    // console.log(timestamp)
-    // console.log(comment)
-    // newIncident.narrative.push({timestamp, comment})    
 
     try {
-        const existingIncident = await incidentModel.findById(incidentId)
-        // console.log(existingIncident.status === false)
-        if (existingIncident.status === false) return res.status(403).json() // ???
-        // console.log("hello")
+        const existingIncident = await incidentModel.findById(incidentId)        
+        if (existingIncident.status === false) return res.status(403).json() // ???        
         await incidentModel.updateOne({_id:incidentId}, newIncident)
+        
+        var existingInci2 = await incidentModel.findById(incidentId)
+        await existingInci2.narrative.push(narr)
+        await console.log(existingInci2.narrative)
+        existingInci2.save()
+        // console.log(existingIncident.narrative)
         res.status(200).json()
+
+
     } catch(e) {
+        console.log("Inside catch{}. Error occured")
         const newIncidentModel = new incidentModel(newIncident)
         await incidentModel.create(newIncidentModel)
         res.status(201).json()
