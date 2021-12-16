@@ -237,7 +237,11 @@ exports.deleteIncident = (req, res) => {
 exports.closeIncidentStatus = async (req, res) => {
     const incidentId = req.params.id
     const incident = await incidentModel.findById(incidentId)
-    incident.status = false
-    await incidentModel.updateOne({ _id: incidentId }, incident)
+    incident.status = 0;
+    incident.incidentResolution = req.body.incidentResolution;
+    currentDate = new Date()
+    result = Math.abs(currentDate - incident.createdDate) // the result is in milliseconds
+    incidentWithDuration = Object.assign(incident, {"incidentDuration" : String(duration(result))})
+    await incidentModel.updateOne({_id: incidentId}, incidentWithDuration)
     res.status(200).json()
 }
