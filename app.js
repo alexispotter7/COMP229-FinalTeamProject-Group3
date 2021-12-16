@@ -1,7 +1,6 @@
 const express = require('express');
 const logger = require('morgan')
 const bodyParser = require('body-parser')
-const morgan = require('morgan') // ???
 const mongoose = require('mongoose')
 const cors = require('cors') // ?????
 
@@ -9,21 +8,21 @@ const app = express();
 require('dotenv').config()
 
 // // connecting to mongo
-mongoose.connect(process.env.connectionString)
-  .then(() => console.log('connected to mongodb...'))
-  .catch(err => console.log(err))
+// mongoose.connect(process.env.connectionString)
+//   .then(() => console.log('connected to mongodb...'))
+//   .catch(err => console.log(err))
 
 
 // For Test!!!
-// let db = require('./db');
-//     // Connect to the Database (My Database: JaeukDB)
-// mongoose.connect(db.mongodbUri);
+let db = require('./db');
+    // Connect to the Database (My Database: JaeukDB)
+mongoose.connect(db.mongodbUri);
 
-// let mongoDB = mongoose.connection;
-// mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
-// mongoDB.once('open', ()=>{
-//   console.log('Connected to MongoDB...');
-// });
+let mongoDB = mongoose.connection;
+mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
+mongoDB.once('open', ()=>{
+  console.log('Connected to MongoDB...');
+});
 
 
 
