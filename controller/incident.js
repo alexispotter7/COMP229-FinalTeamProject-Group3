@@ -21,7 +21,7 @@ exports.getAllIncidents = (req, res) => {
             
         } else {
             // res.json({"message": "Admin only can see all the things"})
-            incidentModel.find({"username": user.username}, (err, incidents) => {
+            incidentModel.find({"owner": user.username}, (err, incidents) => {
                 if (err) return res.status(INTERNAL_SERVER_ERROR).json({ "error": err.message })                        
                 res.status(OK).json(incidents)
                 console.log(incidents)
@@ -60,12 +60,15 @@ exports.createNewIncident = (req, res) => {
         phoneNumber: req.body.phoneNumber,
         email: req.body.email,
         description: req.body.description,
-        priority: req.body.priority,
-        customerInformation: req.body.customerInformation,
-        narrative: req.body.narrative,
+        priority: req.body.priority,                
         createdDate: date,
         recordNumber: recordNum,
+        incidentResoultion: req.body.incidentResoultion 
     })    
+    // For Narrative
+    timestamp = new Date();
+    comment = req.body.newComment;
+    newRecipe.narrative.push({timestamp, comment})    
 
     incidentModel.create(newRecipe, (err, incident) => {
         if (err) return res.status(BAD_REQUEST).json({"error": err.message})
@@ -118,24 +121,42 @@ exports.getIncidentById = (req, res) => {
 
 exports.updateIncident = async (req, res) => {
    const incidentId = req.params.id
-   const newIncident = {
-       owner : req.decoded.username,
-       name: req.body.name,
-       date: req.body.date,
-       address: req.body.address,
-       phoneNumber: req.body.phoneNumber,
-       email: req.body.email,
-       description: req.body.description,
-       priority: req.body.priority,       
-       narrative: req.body.narrative,
-       recordNumber: req.body.recordNumber,
-       status: req.body.status
-    }  
+//    const newIncident = new incidentModel({
+//        owner : req.decoded.username,
+//        name: req.body.name,
+//        date: req.body.date,
+//        address: req.body.address,
+//        phoneNumber: req.body.phoneNumber,
+//        email: req.body.email,
+//        description: req.body.description,
+//        priority: req.body.priority,              
+//        status: req.body.status,       
+//        incidentResoultion: req.body.incidentResoultion 
+//     })
+    const newIncident = {
+        owner : req.decoded.username,
+        name: req.body.name,
+        date: req.body.date,
+        address: req.body.address,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email,
+        description: req.body.description,
+        priority: req.body.priority,              
+        status: req.body.status,       
+        incidentResoultion: req.body.incidentResoultion 
+     }
+    // For Narrative
+    // timestamp = new Date();    
+    // comment = req.body.newComment;
+    // console.log(timestamp)
+    // console.log(comment)
+    // newIncident.narrative.push({timestamp, comment})    
+
     try {
         const existingIncident = await incidentModel.findById(incidentId)
         // console.log(existingIncident.status === false)
-        if (existingIncident.status === false) return res.status(403).json()
-        console.log("hello")
+        if (existingIncident.status === false) return res.status(403).json() // ???
+        // console.log("hello")
         await incidentModel.updateOne({_id:incidentId}, newIncident)
         res.status(200).json()
     } catch(e) {
